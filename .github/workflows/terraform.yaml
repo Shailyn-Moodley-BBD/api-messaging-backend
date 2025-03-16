@@ -40,7 +40,7 @@ jobs:
       - name: Terraform Refresh
         id: refresh
         run: terraform refresh
-        
+
       - name: Terraform Plan
         id: plan
         run: terraform plan -no-color
@@ -50,8 +50,11 @@ jobs:
 
       - name: Capture Terraform Outputs
         id: tf_outputs
-        run: |
-          echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
+        DB_HOST=$(terraform output -raw db_host)
+        echo "DB Host from terraform: $DB_HOST"
+        echo "dbhost=$DB_HOST" >> $GITHUB_OUTPUT
+        # Verify the output is being set correctly
+        cat $GITHUB_OUTPUT
 
   flyway:
     needs: terraform
@@ -67,7 +70,6 @@ jobs:
 
       - name: Debug DB Host
         run: echo "Database Host ${{ needs.terraform.outputs.dbhost }}"
-
 
       - name: Run Flyway Migrations
         run: |
