@@ -121,5 +121,5 @@ resource "postgresql_database" "db" {
 
 # Output the DB endpoint for easy access
 output "db_host" {
-  value       = aws_db_instance.api_messenger_db.endpoint
+  value = aws_db_instance.api_messenger_db.endpoint
 }
