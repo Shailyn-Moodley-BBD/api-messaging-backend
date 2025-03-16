@@ -58,7 +58,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Debug DB Host
-        run: echo "Database Host: ${{ needs.terraform.outputs.dbhost }}"
+        run: echo "Database Host ${{ needs.terraform.outputs.dbhost }}"
 
 
       - name: Run Flyway Migrations
