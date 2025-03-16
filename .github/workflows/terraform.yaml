@@ -50,11 +50,12 @@ jobs:
 
       - name: Capture Terraform Outputs
         id: tf_outputs
-        DB_HOST=$(terraform output -raw db_host)
-        echo "DB Host from terraform: $DB_HOST"
-        echo "dbhost=$DB_HOST" >> $GITHUB_OUTPUT
-        # Verify the output is being set correctly
-        cat $GITHUB_OUTPUT
+        run: |
+          DB_HOST=$(terraform output -raw db_host)
+          echo "DB Host from terraform: $DB_HOST"
+          echo "dbhost=$DB_HOST" >> $GITHUB_OUTPUT
+          # Verify the output is being set correctly
+          cat $GITHUB_OUTPUT
 
   flyway:
     needs: terraform
