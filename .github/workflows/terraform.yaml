@@ -57,6 +57,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Debug DB Host
+        run: echo "Database Host: ${{ needs.terraform.outputs.dbhost }}"
+
+
       - name: Run Flyway Migrations
         run: |
-          docker run --rm --volume ${{ github.workspace }}/flyway/migrations/versioned:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}/${{ secrets.TF_VAR_DB_NAME }}" -user="${{ secrets.TF_VAR_DB_USERNAME }}" -password="${{ secrets.TF_VAR_DB_PASSWORD }}" migrate
+          docker run --rm --volume ${{ github.workspace }}/flyway/migrations/versioned:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}:5432/${{ secrets.TF_VAR_DB_NAME }}" -user="${{ secrets.TF_VAR_DB_USERNAME }}" -password="${{ secrets.TF_VAR_DB_PASSWORD }}" migrate
