@@ -51,7 +51,7 @@ jobs:
       - name: Capture Terraform Outputs
         id: tf_outputs
         run: |
-          echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
+          echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_ENV
 
   flyway:
     needs: terraform
@@ -67,8 +67,9 @@ jobs:
 
       - name: Debug DB Host
         run: |
-          echo "Database Host exists: ${{ needs.terraform.outputs.dbhost != '' }}"
+          echo "Database Host exists: ${{ env.dbhost != '' }}"
 
       - name: Run Flyway Migrations
         run: |
-          docker run --rm --volume ${{ github.workspace }}/flyway/migrations/versioned:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}:5432/${{ secrets.TF_VAR_DB_NAME }}" -user="${{ secrets.TF_VAR_DB_USERNAME }}" -password="${{ secrets.TF_VAR_DB_PASSWORD }}" migrate
+          docker run --rm --volume ${{ github.workspace }}/flyway/migrations/versioned:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ env.dbhost }}/${{ secrets.TF_VAR_DB_NAME }}" -user="${{ secrets.TF_VAR_DB_USERNAME }}" -password="${{ secrets.TF_VAR_DB_PASSWORD }}" migrate
+
