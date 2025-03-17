@@ -58,6 +58,7 @@ jobs:
     name: Flyway migrations
     runs-on: ubuntu-latest
     env:
+      AWS_RDS_ENDPOINT: ${{secrets.AWS_RDS_ENDPOINT}}
       TF_VAR_db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
       TF_VAR_db_username: ${{ secrets.TF_VAR_DB_USERNAME }}
       TF_VAR_db_name: ${{ secrets.TF_VAR_DB_NAME }}
@@ -71,5 +72,5 @@ jobs:
 
       - name: Run Flyway Migrations
         run: |
-          docker run --rm --volume ${{ github.workspace }}/flyway/migrations/versioned:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}/${{ secrets.TF_VAR_DB_NAME }}" -user="${{ secrets.TF_VAR_DB_USERNAME }}" -password="${{ secrets.TF_VAR_DB_PASSWORD }}" migrate
+          docker run --rm --volume ${{ github.workspace }}/flyway/migrations/versioned:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{secrets.AWS_RDS_ENDPOINT}}:5432/${{ secrets.TF_VAR_DB_NAME }}" -user="${{ secrets.TF_VAR_DB_USERNAME }}" -password="${{ secrets.TF_VAR_DB_PASSWORD }}" migrate
 
