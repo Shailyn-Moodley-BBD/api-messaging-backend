@@ -65,14 +65,19 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        
-      - name: repair
-        run: |
-          flyway repair
 
       - name: Debug DB Host
         run: |
           echo "Database Host exists: ${{ needs.terraform.outputs.dbhost != '' }}"
+
+      - name: Run Flyway Undo (If Needed)
+        continue-on-error: true
+        run: |
+          docker run --rm --volume ${{ github.workspace }}/flyway/migrations/versioned:/flyway/sql:ro redgate/flyway \
+            -url="jdbc:postgresql://${{ secrets.AWS_RDS_ENDPOINT }}:5432/${{ secrets.TF_VAR_DB_NAME }}" \
+            -user="${{ secrets.TF_VAR_DB_USERNAME }}" \
+            -password="${{ secrets.TF_VAR_DB_PASSWORD }}" \
+            undo
 
       - name: Run Flyway Migrations
         run: |
