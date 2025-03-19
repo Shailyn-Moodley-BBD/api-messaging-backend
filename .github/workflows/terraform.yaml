@@ -65,6 +65,10 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        
+      - name: repair
+        run: |
+          flyway repair
 
       - name: Debug DB Host
         run: |
