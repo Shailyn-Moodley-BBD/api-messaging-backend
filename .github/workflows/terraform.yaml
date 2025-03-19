@@ -72,11 +72,11 @@ jobs:
 
       - name: Run Flyway Repair (Fix Migrations)
         run: |
-          docker run --rm --volume ${{ github.workspace }}/flyway/migrations/versioned:/flyway/sql:ro redgate/flyway \
-            -url="jdbc:postgresql://${{ secrets.AWS_RDS_ENDPOINT }}:5432/${{ secrets.TF_VAR_DB_NAME }}" \
-            -user="${{ secrets.TF_VAR_DB_USERNAME }}" \
-            -password="${{ secrets.TF_VAR_DB_PASSWORD }}" \
-            repair
+          docker run --rm redgate/flyway \
+          -url="jdbc:postgresql://${{ secrets.AWS_RDS_ENDPOINT }}:5432/${{ secrets.TF_VAR_DB_NAME }}" \
+          -user="${{ secrets.TF_VAR_DB_USERNAME }}" \
+          -password="${{ secrets.TF_VAR_DB_PASSWORD }}" \
+          clean
 
       - name: Run Flyway Migrations
         run: |
