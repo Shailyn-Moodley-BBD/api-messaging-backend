@@ -1,5 +1,5 @@
 CREATE TABLE Conversations (
-  ConversationID SERIAL PRIMARY KEY,
-  ConversationName VARCHAR(100),
-  CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  conversation_id SERIAL PRIMARY KEY, 
+  conversation_name VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

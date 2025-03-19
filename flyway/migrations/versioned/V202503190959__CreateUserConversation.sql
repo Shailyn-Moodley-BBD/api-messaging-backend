@@ -1,5 +1,5 @@
 CREATE TABLE UserConversations (
-  UserID INT NOT NULL REFERENCES Users(UserID),
-  ConversationID INT NOT NULL REFERENCES Conversations(ConversationID),
-  PRIMARY KEY (UserID, ConversationID)
+  user_id INT NOT NULL REFERENCES users(user_id), 
+  conversation_id INT NOT NULL REFERENCES Conversations(conversation_id),
+  PRIMARY KEY (user_id, conversation_id)
 );
