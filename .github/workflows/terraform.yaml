@@ -34,10 +34,6 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform init -backend-config="bucket=${{ secrets.AWS_BUCKET_NAME}}" -backend-config="key=${{ secrets.AWS_BUCKET_KEY}}" -backend-config="region=af-south-1"
-     
-      - name: Terraform Refresh
-        id: refresh
-        run: terraform refresh
 
       - name: Terraform Plan
         id: plan
